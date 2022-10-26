@@ -20,6 +20,8 @@ const divComputerCards  = document.querySelector('#computer-cards')
 
 // this function creates a new deck
 const createDeck = () => {
+    deck = [];
+
     for(let i=2; i<=10; i++) {
         for(let type of types) {
             deck.push(i + type);
@@ -52,11 +54,45 @@ const pickCard = () => {
 
 
 
-
+// Asign a value to the card
 const cardValue = ( card ) => {
     let value = card.substring(0, card.length - 1);
     isNaN(value) ? value = (value === 'A') ? 11 : 10 : value = +value;
     return value;
+}
+
+
+// computer
+
+const computerTime = ( minPoints ) => {
+    do {
+        const card = pickCard(); 
+
+        computerPoints = computerPoints + cardValue(card);
+        computerPointsDom.innerText = computerPoints;
+
+        const imgCard = document.createElement('img');
+        imgCard.classList.add('cards');                           // Also imgCard.className = 'cards'
+        imgCard.src = `assets/cartas/${card}.png`;
+        divComputerCards.append(imgCard);
+
+        if(minPoints > 21 || computerPoints === 21) {
+            break
+        }
+    } while (computerPoints <= minPoints)
+
+    setTimeout(() => {
+        if(minPoints === computerPoints ) {
+        alert('Empate')
+        } else if (minPoints > 21) {
+        alert('Lo siento, has pedido esta mano...')
+        } else if (computerPoints > minPoints && computerPoints <= 21) {
+        alert('Lo siento, has pedido esta mano...')
+        } else if (computerPoints > 21) {
+        alert('Felicidades, has ganado la mano!')
+        }
+    }, 20);
+
 }
 
 
@@ -76,10 +112,34 @@ btnTakeCard.addEventListener('click', () => {
     if (playerPoints > 21) {
         console.warn('YOU LOSE');
         btnTakeCard.disabled = true;
+        btnFinish.disabled = true;
+        computerTime(playerPoints);
     } else if (playerPoints === 21) {
         console.warn('GENIAL');
         btnTakeCard.disabled = true;
+        btnFinish.disabled = true;
+        computerTime(playerPoints);
     }
-
-    console.log(playerPoints);
 });
+
+btnFinish.addEventListener('click', () => {
+    btnTakeCard.disabled = true;
+    btnFinish.disabled = true;
+    computerTime(playerPoints);
+})
+
+btnNewGame.addEventListener('click', () =>{
+    createDeck();
+    
+    playerPoints = 0;
+    playerPointsDom.innerText = playerPoints;
+    divPlayerCards.innerHTML = '';
+
+    computerPoints = 0;
+    computerPointsDom.innerText = computerPoints;
+    divComputerCards.innerHTML = '';
+
+    btnTakeCard.disabled = false;
+    btnFinish.disabled = false;
+})
+
