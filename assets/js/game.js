@@ -1,6 +1,22 @@
-let deck            = [];
-const types         = ['C', 'D', 'H', 'S'];
-const specials      = ['J', 'Q', 'K', 'A'];
+let deck                = [];
+const types             = ['C', 'D', 'H', 'S'];
+const specials          = ['J', 'Q', 'K', 'A'];
+
+let playerPoints        = 0
+let computerPoints      = 0
+
+// HTML references
+const btnNewGame        = document.querySelector('#btnNewGame')
+const btnTakeCard       = document.querySelector('#btnTakeCard')
+const btnFinish         = document.querySelector('#btnFinish')
+
+const playerPointsDom   = document.querySelector('#small-player');
+const computerPointsDom = document.querySelector('#small-computer');
+
+const divPlayerCards    = document.querySelector('#player-cards')
+const divComputerCards  = document.querySelector('#computer-cards')
+
+
 
 // this function creates a new deck
 const createDeck = () => {
@@ -16,7 +32,7 @@ const createDeck = () => {
     };
 
     deck = _.shuffle(deck);
-    console.log(deck);
+    console.log(deck)
     return deck;
 }
 
@@ -34,7 +50,7 @@ const pickCard = () => {
     return card;
 };
 
-// pickCard();
+
 
 
 const cardValue = ( card ) => {
@@ -43,5 +59,27 @@ const cardValue = ( card ) => {
     return value;
 }
 
-let selectedCard = cardValue(pickCard());
-console.log({selectedCard});
+
+// EVENTS
+
+btnTakeCard.addEventListener('click', () => {
+    const card = pickCard(); 
+
+    playerPoints = playerPoints + cardValue(card);
+    playerPointsDom.innerText = playerPoints;
+
+    const imgCard = document.createElement('img');
+    imgCard.classList.add('cards');                           // Also imgCard.className = 'cards'
+    imgCard.src = `assets/cartas/${card}.png`;
+    divPlayerCards.append(imgCard)
+
+    if (playerPoints > 21) {
+        console.warn('YOU LOSE');
+        btnTakeCard.disabled = true;
+    } else if (playerPoints === 21) {
+        console.warn('GENIAL');
+        btnTakeCard.disabled = true;
+    }
+
+    console.log(playerPoints);
+});
