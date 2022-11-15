@@ -5,8 +5,6 @@
     const types             = ['C', 'D', 'H', 'S'],
           specials          = ['J', 'Q', 'K', 'A'];
 
-    // let playerPoints        = 0,
-    //     computerPoints      = 0
     let playersPointsDom    = [];
 
     // HTML references
@@ -14,24 +12,25 @@
           btnTakeCard       = document.querySelector('#btnTakeCard'),
           btnFinish         = document.querySelector('#btnFinish');
 
-    //const playerPointsDom   = document.querySelector('#small-player'),
-    //      computerPointsDom = document.querySelector('#small-computer');
-
     const pointsHTML        = document.querySelectorAll('#small')
     
-    const playersCardsDiv    = document.querySelectorAll('.cardsDiv');
+    const playersCardsDiv   = document.querySelectorAll('.cardsDiv');
 
-    // const divPlayerCards    = document.querySelector('#player-cards'),
-    //       divComputerCards  = document.querySelector('#computer-cards');
 
     // this function start the game
     const startGame = (numPlayers = 2) => {
         deck = createDeck();
+        playersPointsDom = []
         for ( let i = 0; i < numPlayers; i++ ) {
             playersPointsDom.push(0);
-        }
-        console.log(deck);
-    }
+        };
+
+        pointsHTML.forEach( elem => elem.innerText = 0);
+        playersCardsDiv.forEach( elem => elem.innerHTML = "");
+
+        btnTakeCard.disabled = false;
+        btnFinish.disabled = false;
+    };
 
     // this function creates a new deck
     const createDeck = () => {
@@ -84,6 +83,22 @@
         playersCardsDiv[turn].append(imgCard);
     }
 
+    const winner = () => {
+        const [minPoints, computerPoints] = playersPointsDom
+
+        setTimeout(() => {
+            if(minPoints === computerPoints ) {
+            alert('Empate')
+            } else if (minPoints > 21) {
+            alert('Lo siento, has perdido esta mano...')
+            } else if (computerPoints > minPoints && computerPoints <= 21) {
+            alert('Lo siento, has perdido esta mano...')
+            } else if (computerPoints > 21) {
+            alert('Felicidades, has ganado la mano!')
+            }
+        }, 20);
+    }
+
     // computer
 
     const computerTime = ( minPoints ) => {
@@ -92,32 +107,14 @@
             const card = pickCard();
             computerPoints = pointsCounter(card ,playersPointsDom.length - 1 );
 
-            // computerPoints = computerPoints + cardValue(card);
-            // computerPointsDom.innerText = computerPoints;
-
             renderCard( card, playersPointsDom.length - 1);
-            // const imgCard = document.createElement('img');
-            // imgCard.classList.add('cards');                           // Also imgCard.className = 'cards'
-            // imgCard.src = `assets/cartas/${card}.png`;
-            // divComputerCards.append(imgCard);
 
             if(minPoints > 21 || computerPoints === 21) {
                 break
             }
         } while (computerPoints <= minPoints)
 
-        setTimeout(() => {
-            if(minPoints === computerPoints ) {
-            alert('Empate')
-            } else if (minPoints > 21) {
-            alert('Lo siento, has pedido esta mano...')
-            } else if (computerPoints > minPoints && computerPoints <= 21) {
-            alert('Lo siento, has pedido esta mano...')
-            } else if (computerPoints > 21) {
-            alert('Felicidades, has ganado la mano!')
-            }
-        }, 20);
-
+        winner();
     }
 
 
@@ -129,14 +126,6 @@
         const playerPoints = pointsCounter(card, 0);
 
         renderCard( card, 0);
-
-        // const imgCard = document.createElement('img');
-        // imgCard.classList.add('cards');                           // Also imgCard.className = 'cards'
-        // imgCard.src = `assets/cartas/${card}.png`;
-        // divPlayerCards.append(imgCard)
-
-
-        console.log('puntos jugador',playerPoints);
 
         if (playerPoints > 21) {
             btnTakeCard.disabled = true;
@@ -157,28 +146,8 @@
 
     btnNewGame.addEventListener('click', () =>{
         startGame();
-
-        
-
-
-
-        playersPointsDom[0] = 0;
-        pointsHTML[0].innerText = 0;
-        playersCardsDiv[0].innerHTML = '';
-        
-        playersPointsDom[playersPointsDom.length - 1] = 0;
-        pointsHTML[1].innerText = 0;
-        playersCardsDiv[1].innerHTML = '';
-        
-        btnTakeCard.disabled = false;
-        btnFinish.disabled = false;
-
-
-        // console.log(playersPointsDom[0], playersPointsDom[playersPointsDom.length - 1])
-
     })
 
+    return 'Hola Mundo';
+
 })();
-
-
-
