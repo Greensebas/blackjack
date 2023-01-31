@@ -1,5 +1,5 @@
-(() => {                    // Esto se llama "patrón módulo" y permite que desde el browser no se pueda acceder a las variables
-    'use strict'
+(() => {                    // Esto se llama "patrón módulo" y permite que desde la consola del browser no se pueda acceder a las variables
+    'use strict'            // Esto le dice a js que sea estricto a la hora de evaluar el código (yo podría declarar numeros = [1, 2, 3] sin let, var o const y js lo tomaría igual, pero en 'use strict' esto arroja error)
 
     let deck                = [];
     const types             = ['C', 'D', 'H', 'S'],
@@ -46,7 +46,7 @@
                 deck.push(special + type)
             };
         };
-        return _.shuffle(deck)
+        return _.shuffle(deck)                     // Esta función no es nativa del js, la traemos de la librería 'underscore', lo que hace es mezclar el array que se le pasa como parámetro
     }
 
 
